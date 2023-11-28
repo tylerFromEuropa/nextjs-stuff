@@ -1,4 +1,16 @@
 export default async function Comments({ postSlug }: { postSlug: string }) {
+    const WEBSITE_URL = "http://localhost:3000";
+
+    let comments = [];
+
+    try {
+        const commentsResult = await fetch(`${WEBSITE_URL}/api/comments/${postSlug}`, { next: { revalidate: 5 } });
+        const response = await commentsResult.json();
+        comments = response.comments.rows;
+    } catch (error) {
+        console.log(error);
+    }
+
     return (
         <section>
             <h2>| Comments |</h2>
@@ -13,6 +25,16 @@ export default async function Comments({ postSlug }: { postSlug: string }) {
 
                 <button type="submit">Send comment</button>
             </form>
+            {comments.map((comment: { id: string; content: string; username: string }) => {
+                return (
+                    <li key={comment.id}>
+                        {comment.username}
+                        says...
+                        <br />
+                        {comment.content}
+                    </li>
+                );
+            })}
         </section>
     );
 }
