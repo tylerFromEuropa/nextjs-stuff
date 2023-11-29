@@ -1,12 +1,14 @@
-export default async function Comments({ postSlug }: { postSlug: string }) {
-    const WEBSITE_URL = "http://localhost:3000";
+import { WEB_SITE } from "config";
 
+export default async function Comments({ postSlug }: { postSlug: string }) {
     let comments = [];
 
     try {
-        const commentsResult = await fetch(`${WEBSITE_URL}/api/comments/${postSlug}`, { next: { revalidate: 5 } });
+        const commentsResult = await fetch(`${WEB_SITE}/api/comments/${postSlug}`, { next: { revalidate: 5 } });
+        // console.log(commentsResult.json());
         const response = await commentsResult.json();
-        comments = response.comments.rows;
+        comments = response.rows;
+        // console.log(response.rows);
     } catch (error) {
         console.log(error);
     }
