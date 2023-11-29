@@ -1,4 +1,5 @@
 import { WEB_SITE } from "config";
+import { CommentForm } from "./CommentForm";
 
 export default async function Comments({ postSlug }: { postSlug: string }) {
     let comments = [];
@@ -17,26 +18,19 @@ export default async function Comments({ postSlug }: { postSlug: string }) {
         <section>
             <h2>| Comments |</h2>
             <h3>Leave a comment: </h3>
-
-            <form action={`/api/comments/${postSlug}`} method="POST">
-                <label htmlFor="username">Name:</label>
-                <input type="text" name="username" className="text-neutral-900" />
-
-                <label htmlFor="comment">Comment:</label>
-                <textarea name="comment" cols={30} rows={10} className="text-neutral-900" />
-
-                <button type="submit">Send comment</button>
-            </form>
-            {comments.map((comment: { id: string; content: string; username: string }) => {
-                return (
-                    <li key={comment.id}>
-                        {comment.username}
-                        says...
-                        <br />
-                        {comment.content}
-                    </li>
-                );
-            })}
+            <CommentForm postSlug="postSlug" />
+            <ul>
+                {comments.map((comment: { id: string; content: string; username: string }) => {
+                    return (
+                        <li key={comment.id}>
+                            {comment.username}
+                            says...
+                            <br />
+                            {comment.content}
+                        </li>
+                    );
+                })}
+            </ul>
         </section>
     );
 }
